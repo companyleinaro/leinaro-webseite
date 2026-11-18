@@ -23,8 +23,8 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <link rel="preload" href="fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20261117v4">
-    <script src="js/script.js?v=20261117v4"></script>
+    <link rel="stylesheet" href="css/style.css?v=20261118v1">
+    <script src="js/script.js?v=20261118v1"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -61,12 +61,13 @@
       <ul class="mobile-menu__list">
         <li><a href="index.html">Start</a></li>
         <li><a href="ueber-uns.html">Über mich</a></li>
-        <li><a href="leistungen.html">Leistungen</a>
-        <ul class="mobile-menu__sub">
+        <li class="mobile-menu__group"><button class="mobile-menu__toggle" type="button" aria-expanded="false" aria-controls="mobile-sub-leistungen">Leistungen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <ul class="mobile-menu__sub" id="mobile-sub-leistungen" hidden>
           <li><a href="webdesign.html">Webdesign &amp; Entwicklung</a></li>
           <li><a href="seo.html">SEO &amp; Sichtbarkeit</a></li>
           <li><a href="domain-hosting.html" aria-current="page">Domain &amp; Hosting</a></li>
           <li><a href="betreuung.html">Wartung &amp; Betreuung</a></li>
+          <li class="mobile-menu__all"><a href="leistungen.html">Alle Leistungen im Überblick</a></li>
         </ul></li>
         <li><a href="referenzen.html">Projekte</a></li>
         <li><a href="faq.html">FAQ</a></li>

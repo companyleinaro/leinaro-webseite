@@ -746,10 +746,53 @@ p {
   color: var(--pink);
 }
 
+/* „Leistungen“: aufklappbare Gruppe mit den einzelnen Leistungen */
+.mobile-menu__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: clamp(2rem, 9vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: var(--track-head);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-menu__group:has([aria-current="page"]) > .mobile-menu__toggle {
+  color: var(--pink);
+}
+
+.mobile-menu__toggle svg {
+  flex: none;
+  width: 0.6em;
+  height: 0.6em;
+  transition: transform 0.35s var(--ease);
+}
+
+.mobile-menu__toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
 .mobile-menu__sub {
   margin: 0.25rem 0 0.75rem;
   padding: 0 0 0 0.25rem;
   list-style: none;
+}
+
+.mobile-menu__sub:not([hidden]) {
+  animation: fade-up 0.4s var(--ease);
+}
+
+.mobile-menu__all a {
+  color: var(--white);
+  font-weight: 700;
 }
 
 .mobile-menu__sub a {
@@ -2390,11 +2433,18 @@ a.contact-big:hover {
   background: linear-gradient(180deg, rgba(200, 223, 112, 0.55), var(--grey));
 }
 
-.mock-phone {
+/* Die Position sitzt am äußeren Element. Säße sie am Handy selbst, würde
+   es nach der Einblend-Animation (transform) kurz an seinen Platz springen. */
+.mock-browser__phone {
   position: absolute;
   right: 0;
   bottom: 0;
   width: clamp(84px, 24%, 128px);
+}
+
+.mock-phone {
+  position: relative;
+  width: 100%;
   aspect-ratio: 9 / 18;
   padding: 6px;
   border-radius: 18px;
@@ -2997,8 +3047,9 @@ a.contact-big:hover {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* Mobil immer erst Nummer und Text, darunter das Bild */
   .split__media--first {
-    order: -1;
+    order: 1;
   }
 
   .points {

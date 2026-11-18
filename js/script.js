@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Hero-Überschriften werden zusätzlich so begrenzt, dass sie nie unter die
   // Navigation reichen (niedrige Laptop-Fenster, Handys im Querformat).
   const fitTargets = Array.from(document.querySelectorAll(
-    ".display, .h-xl, .h-lg, .statement, .service-row__title, .work-card__title, .package h3, .mobile-menu__list > li > a, .quote blockquote"
+    ".display, .h-xl, .h-lg, .statement, .service-row__title, .work-card__title, .package h3, .mobile-menu__list > li > a, .mobile-menu__toggle, .quote blockquote"
   ));
   const measureCanvas = document.createElement("canvas").getContext("2d");
 
@@ -99,9 +99,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let headerScrolled = null;
   let headerHidden = false;
   let lastScrollY = window.scrollY;
+  // Startseite: Navigation bleibt sichtbar, bis die Scroll-Story (alle vier
+  // Szenen) unter der Navigation durchgelaufen ist.
+  let headerLockUntil = 0;
 
   function measureHeader() {
     const y = window.scrollY;
+    const storyEl = document.querySelector(".story");
+    headerLockUntil = storyEl && header
+      ? storyEl.getBoundingClientRect().bottom + y - header.offsetHeight
+      : 0;
     sectionBounds = themedSections.map((section) => {
       const rect = section.getBoundingClientRect();
       return { top: rect.top + y, bottom: rect.bottom + y, theme: section.dataset.header };
@@ -133,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (Math.abs(delta) > 6 || y <= 120) {
       const menuBusy = document.body.classList.contains("menu-open") ||
         subItems.some((item) => item.classList.contains("is-open"));
-      const hide = y > 120 && delta > 0 && !menuBusy;
+      const hide = y > Math.max(120, headerLockUntil) && delta > 0 && !menuBusy;
       if (hide !== headerHidden) {
         headerHidden = hide;
         header.classList.toggle("is-hidden", hide);
@@ -198,6 +205,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     window.addEventListener("resize", () => {
       if (window.innerWidth > 1080 && document.body.classList.contains("menu-open")) setMenu(false);
+    });
+
+    // „Leistungen“ im Handy-Menü auf- und zuklappen
+    mobileMenu.querySelectorAll(".mobile-menu__toggle").forEach((toggle) => {
+      const sub = document.getElementById(toggle.getAttribute("aria-controls"));
+      if (!sub) return;
+      const setOpen = (open) => {
+        toggle.setAttribute("aria-expanded", String(open));
+        sub.hidden = !open;
+      };
+      // Auf einer Leistungsseite ist die Gruppe gleich offen
+      setOpen(Boolean(sub.querySelector('[aria-current="page"]')));
+      toggle.addEventListener("click", () => setOpen(sub.hidden));
     });
   }
 
